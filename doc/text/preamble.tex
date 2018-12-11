@@ -1,0 +1,94 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{csquotes}	% Supports babel
+\usepackage{graphicx} 	% Images
+\usepackage{verbatim} 	% Weird letters
+\usepackage{tabularx}	% Beautiful tables
+\usepackage{booktabs}	% Wonderful tables
+\usepackage{float}		% Stick images to prefered spot
+\usepackage{color}		% For different colors
+\usepackage{listings}	% Inserting code
+\usepackage{hyperref}	% URLs
+\usepackage{amsmath}	% Math symbols
+\usepackage{tikz}		% Design figures
+\usepackage{enumitem}	% Itemize settings
+\usepackage{subfig}		% Sub figures
+\usepackage{subfloat}	% Figures side by side
+\usepackage{geometry}	% Change margins on each page
+\usepackage{empheq}		% Beautiful boxes
+\usepackage{multirow}	% Multirow in table
+\usepackage{multicol}	% Multicolumn in table
+\usepackage{varwidth}	% Rotate text in table
+\usepackage{arydshln}   % Dashed lines in table
+
+%biblatex
+%\iffalse
+\usepackage[
+backend=bibtex,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+%\fi
+\addbibresource{refs.bib}
+
+%listings
+\definecolor{myblue}{rgb}{0.8, 0.8, 1}
+\lstset{language=python}
+\lstset{basicstyle=\small}
+\lstset{backgroundcolor=\color{myblue}}
+\lstset{frame=single}
+\lstset{stringstyle=\ttfamily}
+\lstset{keywordstyle=\color{blue}\bfseries}
+\lstset{commentstyle=\itshape\color{blue}}
+\lstset{showspaces=false}
+\lstset{showstringspaces=false}
+\lstset{showtabs=false}
+\lstset{breaklines}
+\lstset{postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{blue}\hookrightarrow\space}}}
+
+%tikz
+\setcounter{secnumdepth}{4}
+\usetikzlibrary{through, shapes, calc, shapes, arrows, positioning, er, arrows.meta, shadows}
+\tikzstyle{neuron}=[draw,circle,minimum size=20pt,inner sep=0pt, fill=white]
+\tikzstyle{stateTransition}=[thick]
+\tikzstyle{learned}=[text=red]
+
+\tikzset{basic/.style={draw,fill=myblue!20,text width=1em,text badly centered}}
+\tikzset{input/.style={basic,circle}}
+\tikzset{weights/.style={basic,rectangle}}
+\tikzset{functions/.style={basic,circle,fill=myblue!10}}
+
+%empheq blue box
+\newlength\mytemplen
+\newsavebox\mytempbox
+
+\makeatletter
+\newcommand\mybluebox{%
+	\@ifnextchar[%]
+	{\@mybluebox}%
+	{\@mybluebox[0pt]}}
+
+\def\@mybluebox[#1]{%
+	\@ifnextchar[%]
+	{\@@mybluebox[#1]}%
+	{\@@mybluebox[#1][0pt]}}
+
+\def\@@mybluebox[#1][#2]#3{
+	\sbox\mytempbox{#3}%
+	\mytemplen\ht\mytempbox
+	\advance\mytemplen #1\relax
+	\ht\mytempbox\mytemplen
+	\mytemplen\dp\mytempbox
+	\advance\mytemplen #2\relax
+	\dp\mytempbox\mytemplen
+	\colorbox{myblue}{\hspace{1em}\usebox{\mytempbox}\hspace{1em}}}
+
+\makeatother
+
+%specific reused text
+\newcommand{\mdate}{\today}
+\newcommand{\mtitle}{FYS-STK4155 - Applied data analysis and machine learning\\\vspace{2mm} \Large{Project 3}}
+\newcommand{\mauthor}{Even M. Nordhagen}
+\newcommand{\massignn}{.}
+\newcommand{\bb}[1]{\boldsymbol{#1}}

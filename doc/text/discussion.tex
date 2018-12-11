@@ -1,0 +1,13 @@
+\section{Discussion} \label{sec:discussion}
+We found the logistic regression to give relatively low accuracy score, which is because there is no linear dependency between the classes. The score converges in a few steps because the number of weights to optimize was small. 
+
+From table \eqref{tab:fnn}, we can see that the more hidden nodes the slower does the accuracy converge. This makes perfectly sense, because we then have a larger number of weights to vary. The accuracy for the training set is apparently converging against the same value no matter how many hidden nodes we have, but the validation accuracy is getting higher as the number of hidden nodes increases. This happens because the network gets more flexible when layers are added. 
+
+We also note that the training accuracy is strictly increasing while the validation accuracy is going up and down. This makes sense since we optimize the training accuracy, the validation accuracy is not directly optimized (but hopefully indirectly). 
+
+The CNN was able to reproduce most of the training set, but the validation accuracy was disappointing. We suspect this is caused by information loss in the spectrogram rather than the network itself. Among the filter sizes that we tested, 64+32 worked best. It makes sense that an initial filter of 128 is too large, considering an image size of 173 (we will lose lots of information). An initial size of 32 is again too small, and is not able to extract the important information from noise. 
+
+As one can see, the number of epochs used in the CNN is dramatically reduced compared to FNN. The reason in simply that each epoch takes a few minutes for the CNN, compared to a few seconds for FNN. When using the spectrogram as input to CNN, the input is 173 times as large as the MFCC input, no wonder why it is slower. 
+
+Finally, for the RNN networks in table \eqref{tab:rnn}, we can see that LSTM provides a higher accuracy overall compared to GRU, but they are quite similar. It is no big surprise that the LSTM works well, it is the technique Google and Apple use in their voice recognition. Anyway, RNNs are known be good at sequential inputs, which is what our raw data set is. The MFCCs might not be sequential, so this could be the reason why the RNNs did not outperform FNN. Perhaps we should have tried to feed the RNNs with the raw data set, but we then get back to out old problems including memory error and various input length. 
+

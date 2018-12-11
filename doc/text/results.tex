@@ -1,0 +1,78 @@
+\section{Results} \label{sec:results}
+Finally we are ready to present the results, where the accuracy score is in our focus. We will evaluate each method separately, starting with the logistic regression and moving on to the neural network based methods. What is common for all methods, is that the softmax function was used as output activation function and ADAM was used as minimization tool with a batch size of 32 and a various number of epochs.
+
+\subsection{Logistic regression}
+For logistic regression, we examined how the accuracy was dependent on the regularization parameter with the values $10^{-1}$, $10^{-3}$, $10^{-5}$ and 0. In addition, the number of epochs was varied in the range $[10,50]$. We used the MFCCs as input, and the results can be found below in table \eqref{tab:logistic}.
+\begin{table} [H]
+	\caption{The accuracy-score for the training set (Train) and validation set (Val) with a changing regularization parameter. The number of epochs was set to 10, 20, 30, 40 and 50. As optimization tool, ADAM was used, and we used the softmax activation function.}
+	\begin{tabularx}{\textwidth}{c|XX:XX:XX:XX} \hline\hline
+		\label{tab:logistic}
+		\textbf{Epochs}& \multicolumn{8}{c}{\textbf{Regularization}}\\ \hline
+		&\multicolumn{2}{c}{0.1}&\multicolumn{2}{c}{0.001}&\multicolumn{2}{c}{0.00001}&\multicolumn{2}{c}{0}\\ \hline
+		& Train & Val & Train & Val & Train & Val & Train & Val\\ \hline
+		10 & 0.3925 & 0.4112 & 0.2000 & 0.2042 & 0.2543 & 0.2447 & 0.2308 & 0.2429\\
+		20 & 0.4572 & 0.4802 & 0.2927 & 0.2843 & 0.3320 & 0.3238 & 0.4135 & 0.3919\\
+		30 & 0.5741 & 0.5842 & 0.2948 & 0.2815 & 0.3387 & 0.3395 & 0.4393 & 0.4186\\
+		40 & 0.5780 & 0.5603 & 0.2948 & 0.2861 & 0.3433 & 0.3385 & 0.4402 & 0.4103\\
+		50 & \textbf{0.5916} & \textbf{0.5998} & 0.3007 & 0.2833 & 0.3389 & 0.3395 & 0.4590 & 0.4453\\ \hline\hline
+	\end{tabularx}
+\end{table}
+As we can see, the more epochs the higher accuracy, but when increasing the number of epochs further, the score does not improve much. Apparently, there is no such linear dependency when it comes to the regularization, but we observe that 0.1 works best. 
+
+\newpage
+\subsection{Feed-forward Neural Networks}
+We found the FNNs to work best without regularization, and will not present results with various regularization parameters. Instead, we vary the number of hidden layers, where each has 1024 nodes. Also here we present the accuracy-score for different number of epochs, going from 20 to 100. The MFCCs were again used as input, see table \eqref{tab:fnn} for the actual accuracy.
+\begin{table} [H]
+	\caption{The accuracy-score for the training set (Train) and validation set (Val) with 1-4 hidden layers with 1024 nodes each. The number of epochs was set to 20, 40, 60, 80 and 100. As optimization tool, ADAM was used, with a batch size of 32. On the output layer we used softmax activation, and on the hidden layers the logistic function was used. A dropout of 50\% was used in all layers.}
+	\begin{tabularx}{\textwidth}{c|XX:XX:XX:XX} \hline\hline
+		\label{tab:fnn}
+		\textbf{Epochs}& \multicolumn{8}{c}{\textbf{Hidden nodes}}\\ \hline
+		&\multicolumn{2}{c}{1024}&\multicolumn{2}{c}{2x1024}&\multicolumn{2}{c}{3x1024}&\multicolumn{2}{c}{4x1024}\\ \hline
+		&Train&Val&Train&Val&Train&Val&Train&Val\\ \hline
+		20& 0.8684 & 0.8464 & 0.8603 & 0.8602 & 0.8541 & 0.8602 & 0.8341 & 0.8298\\
+		40& 0.9245 & 0.8924 & 0.9204 & 0.8942 & 0.9195 & 0.8868 & 0.8990 & 0.8924\\
+		60& 0.9416 & 0.9062 & 0.9508 & 0.9154 & 0.9317 & 0.9016 & 0.9254 & 0.8960\\
+		80& 0.9572 & 0.8942 & 0.9556 & 0.9163 & 0.9508 & 0.9172 & 0.9418 & 0.9016\\
+		100& \textbf{0.9607} & 0.9016 & 0.9579 & 0.9126 & 0.9627 & 0.9181 & 0.9510 & \textbf{0.9200}\\ \hline\hline
+	\end{tabularx}
+\end{table}
+
+Again we see that the more epochs the higher accuracy. We went further increasing the number of epochs to 1000, and got a training accuracy of 0.99 and a validation accuracy of 0.94 for a network with four hidden layers. Apparently, the validation accuracy is more sensitive to the number of hidden layers then the training accuracy. 
+
+\newpage
+\subsection{Convolutional Neural Networks}
+For convolutional networks, there are plenty of options. We can change the number of convolutional layers, max pooling layers, filter sizes, activation functions etc.., in addition to all the options on the fully connected layer. We have decided to vary the filter sizes on two convolutional layers only. As input, we here use the spectrogram, and the network consists of two convolutional layers, two max pooling layer with filter size (2,2) and one hidden layer with dropout on all layers. The ReLU activation function was used on all intern layers, with softmax on the output layer. ADAM was used for minimization, with a batch size of 64 and number of epochs going up to 25. In table \eqref{tab:cnn}, the accuracy-score is presented for the different cases. 
+
+\begin{table} [H]
+	\caption{The accuracy-score for the training set (Train) and validation set (Val) with various filter sizes. The network is built up in the following way: Convolutional layer with filter size N, max pooling layer of size (2,2), 15\% dropout layer, convolutional layer with filter size M, max pooling layer of size (2,2), 20\% dropout layer and output layer with softmax activation. On the other layers, ReLU was used. ADAM was used for minimization, with a batch size of 64 and up to 25 epochs.}
+	\begin{tabularx}{\textwidth}{c|XX:XX:XX} \hline\hline
+		\label{tab:cnn}
+		\textbf{Epochs}& \multicolumn{6}{c}{\textbf{Filter size in conv. layers}}\\ \hline
+		&\multicolumn{2}{c}{N:32, M:16}&\multicolumn{2}{c}{N:64, M:32}&\multicolumn{2}{c}{N:128, M:64}\\ \hline
+		&Train&Val&Train&Val&Train&Val\\ \hline
+		5& 0.6735 & 0.6320 & 0.7858 & 0.7470 & 0.5610 & 0.5511\\
+		10& 0.8415 & 0.7167 & 0.8960 & 0.7810 & 0.8316 & 0.6587\\
+		15& 0.9110 & 0.7194 & 0.9572 & \textbf{0.8197} & 0.9333 & 0.7010\\
+		20& 0.9383 & 0.7232 & 0.9671 & 0.7994 & 0.9595 & 0.7295\\
+		25& 0.9715 & 0.7470 & 0.9602 & 0.7958 & \textbf{0.9777} & 0.7351\\ \hline\hline
+	\end{tabularx}
+\end{table}
+We observe that the validation accuracy is higher for the case with 64+32 convolutional filter size. After 25 epochs the accuracy score has converged, so we do not get a higher accuracy when increasing the number of epochs. 
+
+\newpage
+\subsection{Recurrent Neural Networks}
+The final methods are the RNN methods. We will treat the LSTM and GRU separately, both with two hidden layers of 512 nodes each with 50\% dropout using the ReLU activation function. Both the LSTM layer and the GRU layer has 256 nodes and ReLU activation, and again we use the ADAM optimizer with a batch size 32 and softmax activation on the output. As input, we again used the MFCCs, and in table \eqref{tab:rnn}, the accuracy is presented for up to 100 epochs.
+\begin{table} [H]
+	\caption{The accuracy-score for the training set (Train) and validation set (Val) for Long Short-Term Memory (LSTM) and Gated Recurrent Unit (GRU). The specific layer (LSTM/GRU) has 256 nodes, and we add two hidden layers with 512 nodes each. Apart from softmax on the output layer, we stick to the ReLU activation function. ADAM optimization was used with a batch size of 32, and up to 100 epochs.}
+	\begin{tabularx}{\textwidth}{c|XX:XX} \hline\hline
+		\label{tab:rnn}
+		\textbf{Epochs}&\multicolumn{2}{c}{\textbf{LSTM}}&\multicolumn{2}{c}{\textbf{GRU}}\\ \hline
+		&Train&Val&Train&Val\\ \hline
+		20& 0.8875 & 0.8132 & 0.8440 & 0.8004\\
+		40& 0.9701 & 0.8408 & 0.9457 & 0.8556\\
+		60& 0.9655 & 0.8454 & 0.9634 & 0.8445\\
+		80& 0.9765 & 0.8648 & 0.9850 & 0.8740\\
+		100& \textbf{0.9892} & \textbf{0.8776} & 0.9671 & 0.8556\\ \hline\hline
+	\end{tabularx}
+\end{table}
+As we see, the LSTM provides a slightly higher accuracy than GRU, both for the training set and validation set. Increasing the number of epochs did not improve the accuracy further. 

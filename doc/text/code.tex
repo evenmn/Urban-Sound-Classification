@@ -1,0 +1,103 @@
+\section{Code} \label{sec:code}
+For this project, the choice of programming language was not very difficult. Firstly, Python is a high-level language which is easy to work with and supports large data operations. Secondly, Python has a huge library of useful packages, which we will dive into very soon. Those two factors have made Python the language of machine learning. 
+
+\subsection{Packages}
+When talking about packages in Python for scientific work, the \textbf{NumPy} package cannot be omitted. Due to its performance and simple implementation, NumPy is preferred for data storing, math operations and matrix modifications. \cite{numpy}
+
+The first thing we had to do, was to transform the samplings to Python-friendly objects. For that, the \textbf{LibROSA} package is excellent, and was used to transform the sound clips to NumPy arrays. The same package was used to extract features from the clips, including creating spectrograms and finding MFCCs. \cite{librosa} To read the CSV files linking samples to classes, we used the \textbf{Pandas} package. \cite{pandas}
+
+After the features are extracted, we are ready for classification. In principle, we could have used the neural network which we implemented in Project 2, \cite{Nordhagen}, but it obviously cannot compete with optimized packages considering time performance and flexibility. For that reason, we used \textbf{TensorFlow} with \textbf{Keras} interface for all the classification methods, which is the considered the most feature-rich machine learning tool in Python. \cite{tensorflow}
+
+\subsection{Code structure} \label{sec:structure}
+The code structure is quite simple, and the entire operation is done by three functions \textit{spectrogram.py}, \textit{mfcc.py} and \textit{classifier.py}. In addition, some scripts are written to generate plots used in this report. \textit{classifier.py} consists of five classification functions, namely \texttt{Logistic}, \texttt{FNN}, \texttt{Convolutional}, \texttt{LSTM} and \texttt{Gated}. The code structure is illustrated in figure \eqref{fig:code_structure}. 
+\begin{figure} [H]
+	\centering
+	\begin{tikzpicture}[
+	>={Latex[width=2mm,length=2mm]},
+	base/.style = {rectangle, rounded corners, draw=black,
+		minimum width=2cm, minimum height=0.5cm, text
+		centered, font=\sffamily},
+	basecode/.style = {rectangle, rounded corners, draw=black,
+		minimum width=2cm, minimum height=0.5cm, text
+		centered, font=\sffamily, align=left},
+	activityStarts/.style = {base, fill=blue!30, drop shadow},
+	startstop/.style = {base, fill=red!25, drop shadow},
+	startstopcode/.style = {basecode, fill=Red!25, drop shadow},
+	activityRuns/.style = {base, fill=green!25, drop shadow},
+	process/.style = {base, fill=white!15, font=\sffamily, drop shadow},
+	processcode/.style = {basecode, fill=white!15, font=\sffamily, drop shadow},
+	scale=0.8, 
+	node distance=1.5cm, 
+	every node/.style={fill=white, font=\sffamily},
+	align=center]
+	\node (spec) [activityStarts] {
+		Create Spectrogram \\
+		\textit{spectrogram.py}
+	};
+	\node (mel) [activityStarts, right of=spec, xshift=6cm] {
+		Find MFCCs \\
+		\textit{mfcc.py}
+	};
+	\node (clas) [activityRuns, below right of=spec, xshift=3cm, yshift=-2.2cm] {
+		Classification\\
+		\textit{classifier.py}
+	};
+	\node (log) [process, above right of=clas, xshift=3.0cm, yshift=-0.2cm] {
+		Use \textbf{Logistic Regression}\\
+		Call \texttt{Logistic()}
+	};
+	\node (fnn) [process, below right of=clas, xshift=3.0cm, yshift=0.1cm] {
+		Use \textbf{FNN}\\
+		Call \texttt{FNN()}
+	};
+	\node (cnn) [process, above left of=clas, xshift=-3.0cm, yshift=-0.2cm] {
+		Use \textbf{CNN}\\
+		Call \texttt{Convolutional()}
+	};
+	\node (lstm) [process, below left of=clas, xshift=-3.0cm, yshift=0.1cm] {
+		Use \textbf{LSTM}\\
+		Call \texttt{Long\_short()}
+	};
+	\node (gru) [process, below of=clas, yshift=-0.3cm] {
+		Use \textbf{GRU}\\
+		Call \texttt{Gated()}
+	};
+	\draw[-] (clas) to [out=50, in=180] (log);
+	\draw[-] (clas) to [out=-50, in=180] (fnn);
+	\draw[-] (clas) to [out=130, in=0] (cnn);
+	\draw[-] (clas) to [out=-130, in=0] (lstm);
+	\draw[-] (clas) to [out=-90, in=90] (gru);
+	\draw[->] (spec) to [out=270, in=90] (clas);
+	\draw[->] (mel) to [out=270, in=90] (clas);
+	\end{tikzpicture}
+	\caption{Code structure.}
+	\label{fig:code_structure}
+\end{figure}
+
+\subsection{Implementation}
+The interface provided by \textbf{Keras} is very user-friendly and intuitive. Below a FNN with three hidden layers of 1024 nodes each is presented. The activation function on hidden nodes is the logistic function, while for the output we used the softmax function. A dropout of 50\% is used on all layers and the ADAM optimizer is used with a batch size of 32 and 100 epochs. 
+\lstset{basicstyle=\scriptsize}
+\begin{lstlisting}
+def FNN(N=3):
+    X_train, t_train, X_val, t_val = load_mfcc()
+
+    num_labels = t_train.shape[1]
+
+    model = Sequential()
+
+    model.add(Dense(1024, input_shape=(40,)))
+    model.add(Activation('sigmoid'))
+    model.add(Dropout(0.5))
+
+    for i in range(N-1):
+        model.add(Dense(1024))
+        model.add(Activation('sigmoid'))
+        model.add(Dropout(0.5))
+
+    model.add(Dense(num_labels))
+    model.add(Activation('softmax'))
+
+    model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
+    model.fit(X_train, t_train, batch_size=32, epochs=100, validation_data=(X_val, t_val))
+\end{lstlisting}
+The other implementations are quite similar, and we will therefore not detail them here. For the entire code, see \url{https://github.com/evenmn/FYS-STK4155}.

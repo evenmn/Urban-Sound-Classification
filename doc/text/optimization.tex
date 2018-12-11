@@ -1,0 +1,36 @@
+\section{Optimization}\label{sec:optimization}
+In data science, we are surrounded by large data sets and functions to extract information from them. After a function describing the data set is found, one typical wants to find its minimum or maximum to optimize various parameters. Since the extremes seldomly are available analytically, one has to rely on numerical optimization methods. There exist loads of methods, but we will only look at two gradient methods: Gradient Descent and ADAM, where the latter is preferred. 
+
+\subsection{Gradient Descent (GD)} \label{sec:gd}
+The gradient descent method is the simplest optimization method available. It simply moves the steepest slope towards the extreme with constant step length (learning rate), calculating the gradient based on the entire data set. Mathematically, we can write it as 
+\begin{empheq}[box={\mybluebox[5pt]}]{equation}
+\label{eq:GD}
+{\theta}_{ij}^+={\theta}_{ij} - \eta\cdot\frac{\partial c(\bb{\theta})}{\partial {\theta}_{ij}}
+\end{empheq}
+where ${\theta}_{ij}^+$ is the updated ${\theta}_{ij}$ and $\eta$ is the learning rate, in the same way as in section \ref{sec:methods}. GD has some major cons: it is likely to be stuck in a local extreme and because of its lack of adaptiveness, it is either really slow or likely to walk past the extreme.  An example implementation looks like
+
+\lstset{basicstyle=\scriptsize}
+\begin{lstlisting}
+for iter in range(T):
+    for i in range(N):
+        y[i] = feedforward(X[i])
+        gradient = (y[i] - t[i]) * df(y[i])
+        theta -= eta * gradient
+\end{lstlisting}
+
+\subsection{ADAM}
+ADAM is often the preferred optimization method in machine learning, due to its computational efficiency, little memory occupation and implementation ease. Since it was introduced in a paper by D. P. Kingma and J. Ba in 2015 \cite{adam}, the paper has collected more than 15000 citations! So what is so special about ADAM?
+
+ADAM is a momentum based method that only rely on the first derivative of the cost function. Required inputs are exponential decay rates $\beta_1$ and $\beta_2$, cost function $c(\bb{\theta})$ and initial weights $\bb{\theta}$, in addition to the learning rate $\eta$ and eventually a regularization $\lambda$. Interatively, we first calculate the gradient of the cost function, and use this to calculate the first and second moment estimates. Further, we bias-correct the moments before we use this to update the weights. An implementation may look like this
+\lstset{basicstyle=\scriptsize}
+\begin{lstlisting}
+def ADAM(eta, b1, b2, c, theta, n_epochs):
+    m, v = 0, 0
+    for i in range(n_epochs):
+        grad = d(c)/d(theta)
+        m = b1*m + (1 - b1)*grad
+        v = b2*v + (1 - b2)*grad*grad
+        m_ = m/(1 - b1**i)
+        v_ = v/(1 - b2**i)
+        theta -= eta * m_/(sqrt(v_) + lambda)
+\end{lstlisting}

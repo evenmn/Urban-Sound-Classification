@@ -1,0 +1,200 @@
+\section{Classification methods} \label{sec:methods}
+Classification is very important in everyday life, and we often classify even without thinking about it. An example is when we distinguish between people, which is usually an easy task for a human. For a computer, on the other hand, classification is difficult, but fortunately some great methods are developed mainly based on neural networks. In this contest we will investigate several methods, spanning from \textbf{Logistic regression} to various neural networks like \textbf{Feed-forward Neural Networks}, \textbf{Convolutional Neural Networks} and \textbf{Recurrent Neural Networks}. 
+
+\subsection{Logistic regression}
+Logistic regression is a linear model, which means that each input node is multiplied with only one weight to get the net output. Since we want the probability of each class as a number between 0 and 1, we typically use the logistic function as activation function, and one hot encoder is often used to represent classes as arrays. In figure \eqref{fig:single_perceptron}, logistic regression is illustrated as a single layer perceptron, with inputs on the left and side and outputs on right hand side. 
+
+\begin{figure} [H]
+	\centering
+	\begin{tikzpicture}
+	\node[functions] (center) {};
+	\node[below of=center,font=\scriptsize,text width=4em] {Activation function};
+	\draw[thick] (0.5em,0.5em) -- (0,0.5em) -- (0,-0.5em) -- (-0.5em,-0.5em);
+	\draw (0em,0.75em) -- (0em,-0.75em);
+	\draw (0.75em,0em) -- (-0.75em,0em);
+	\node[right of=center] (right) {};
+	\path[draw,->] (center) -- (right);
+	\node[functions,left=3em of center] (left) {$\sum$};
+	\path[draw,->] (left) -- (center);
+	\node[weights,left=3em of left] (2) {$w_2$} -- (2) node[input,left of=2] (l2) {$x_2$};
+	\path[draw,->] (l2) -- (2);
+	\path[draw,->] (2) -- (left);
+	\node[below of=2] (dots) {$\vdots$} -- (dots) node[left of=dots] (ldots) {$\vdots$};
+	\node[weights,below of=dots] (n) {$w_n$} -- (n) node[input,left of=n] (ln) {$x_n$};
+	\path[draw,->] (ln) -- (n);
+	\path[draw,->] (n) -- (left);
+	\node[weights,above of=2] (1) {$w_1$} -- (1) node[input,left of=1] (l1) {$x_1$};
+	\path[draw,->] (l1) -- (1);
+	\path[draw,->] (1) -- (left);
+	\node[weights,above of=1] (0) {$b$} -- (0) node[input,left of=0] (l0) {$B$};
+	\node[right of=0,font=\scriptsize] {BIAS};
+	\path[draw,->] (l0) -- (0);
+	\path[draw,->] (0) -- (left);
+	\node[below of=ln,font=\scriptsize] {inputs};
+	\node[below of=n,font=\scriptsize] {weights};
+	\node[right of=right] {$y$};
+	\end{tikzpicture}
+	\caption{Logistic regression model with $n$ inputs.}
+	\label{fig:single_perceptron}
+\end{figure}
+
+The first thing one might observe, is the bias on top, which is added to avoid the weights to explode or vanish. For instance, if we want the output to be 1, but the inputs are really small, the weights need to be large to give 1 without the bias. When adding the bias, we do not need that large weights, and the perceptron turns out to be more stable. The bias node value needs to be given, but the value does not really matter since the bias weight will be adjusted with respect to it. The net output is then found to be
+\begin{empheq}[box={\mybluebox[5pt]}]{equation}
+z = \sum_{i=1}^{n} x_i\cdot w_i + b\equiv \sum_{i=1}^{n} \text{x}_i\cdot \text{w}_i
+\label{eq:forward}
+\end{empheq}
+where $\text{x}\equiv [1,x]$, $\text{w}\equiv [b,w]$ and the bias node value is set to 1. We get the real output by sending the net output through the activation function $f$, $y=f(z)$.
+
+What we really want to find is the optimal weight values, which is not necessarily unambiguous. Initially the weight are set to random, preferably small values, and they are updated with the formula
+\begin{empheq}[box={\mybluebox[5pt]}]{align}
+\text{w}_i^+= \text{w}_i - \eta\Big([f(\text{x}_i\cdot\text{w}_i)-t_i]\text{x}_i + \lambda\text{w}_i\Big)
+\end{empheq}
+with $\eta$ as the learning rate, $t_i$ as a target and $\text{w}_i^+$ as an updated weight. $\lambda$ is a regularization parameter inspired by Ridge linear regression. This formula was derived from the cross entropy cost function and makes use of gradient descent. 
+
+\subsection{Feed-forward Neural Networks (FNN)} \label{sec:neural_network}
+Feed-forward neural networks work mostly in the same way as the single layer perceptron, but the difference is that the perceptron model is not single anymore. With two sets of weights, we call it a double layer perceptron, and with more layers it is called a multi layer perceptron model. In figure \eqref{fig:neural_network}, we have illustrated a double layer perceptron.
+
+\begin{figure} [H]
+	\centering
+	\begin{tikzpicture}
+	
+	% Define outputs
+	\node[] (center) {};
+	\node[input, above=0.3em of center] (o1) {$y_1$};
+	\node[input, below=0.3em of center] (o2) {$y_2$};
+	
+	% Draw lines from output nodes
+	\node[right of=o1] (righto1) {};
+	\node[right of=o2] (righto2) {};
+	\path[draw,->] (o1) -- (righto1);
+	\path[draw,->] (o2) -- (righto2);
+	
+	% Hidden nodes
+	\node[input,left=5em of center] (h3) {$h_3$};
+	\node[input,above of=h3] (h2) {$h_2$};
+	\node[input,above of=h2] (h1) {$h_1$};
+	\node[input,below of=h3] (h4) {$h_4$};
+	\node[input,below of=h4] (h5) {$h_5$};
+	\node[input,above of=h1] (b2) {$b_2$};
+	
+	% Draw lines from hidden nodes
+	\path[draw,->] (h1) -- (o1);
+	\path[draw,->] (h2) -- (o1);
+	\path[draw,->] (h3) -- (o1);
+	\path[draw,->] (h4) -- (o1);
+	\path[draw,->] (h5) -- (o1);
+	\path[draw,->] (b2) -- (o1);
+	
+	\path[draw,->] (h1) -- (o2);
+	\path[draw,->] (h2) -- (o2);
+	\path[draw,->] (h3) -- (o2);
+	\path[draw,->] (h4) -- (o2);
+	\path[draw,->] (h5) -- (o2);
+	\path[draw,->] (b2) -- (o2);
+	
+	% Define place left of left
+	\node[input,left=5em of h3] (x2) {$x_2$};
+	\node[input,above of=x2] (x1) {$x_1$};
+	\node[input,below of=x2] (x3) {$x_3$};
+	\node[input,above of=x1] (b1) {$b_1$};
+	
+	% Draw lines from input nodes
+	\path[draw,->] (x1) -- (h1);
+	\path[draw,->] (x1) -- (h2);
+	\path[draw,->] (x1) -- (h3);
+	\path[draw,->] (x1) -- (h4);
+	\path[draw,->] (x1) -- (h5);
+	
+	\path[draw,->] (x2) -- (h1);
+	\path[draw,->] (x2) -- (h2);
+	\path[draw,->] (x2) -- (h3);
+	\path[draw,->] (x2) -- (h4);
+	\path[draw,->] (x2) -- (h5);
+	
+	\path[draw,->] (x3) -- (h1);
+	\path[draw,->] (x3) -- (h2);
+	\path[draw,->] (x3) -- (h3);
+	\path[draw,->] (x3) -- (h4);
+	\path[draw,->] (x3) -- (h5);
+	
+	\path[draw,->] (b1) -- (h1);
+	\path[draw,->] (b1) -- (h2);
+	\path[draw,->] (b1) -- (h3);
+	\path[draw,->] (b1) -- (h4);
+	\path[draw,->] (b1) -- (h5);
+	
+	% Draw lines towards input nodes
+	\node[left of=x1] (leftx1) {};
+	\node[left of=x2] (leftx2) {};
+	\node[left of=x3] (leftx3) {};
+	\path[draw,->] (leftx1) -- (x1);
+	\path[draw,->] (leftx2) -- (x2);
+	\path[draw,->] (leftx3) -- (x3);
+	
+	% Add some text
+	\node[below=5.1em of x2,font=\scriptsize] {input};
+	\node[below=5em of h3,font=\scriptsize] {hidden};
+	\node[below=5.8em of center,font=\scriptsize] {output};
+	\end{tikzpicture}
+	\caption{Neural network with 3 input nodes, 5 hidden nodes and 2 output nodes, in addition to the bias nodes.}
+	\label{fig:neural_network}
+\end{figure}
+
+As one can see, it differs from the single perceptron model in the way that it has one more layer. This makes the model nonlinear, and we are able to solve more complex problems than with the linear one. Actually, the double layer perceptron is able to approximate any continuous function according to the \textbf{the universal approximation theorem}.
+
+Generally, each layer, included the output layer, consists of multiple nodes which gives us a matrix of weights between all the layers. The outputs are found in the same way as for the single perceptron, where the output at layer $l$ is the dependent on the output at layer $l-1$:
+\begin{empheq}[box={\mybluebox[5pt]}]{equation}
+z_j^{(l)} = \sum_{i=1}^{h_{l-1}} \text{z}_i^{(l-1)}\cdot \text{w}_{ij}.
+\label{eq:forward2}
+\end{empheq}
+where $h_{l-1}$ is the number of nodes in layer $l-1$ and the outputs $\text{z}^{l-1}$ again are assumed to take the bias node values. We activate each layer with an activation function, which can be layer unique, similarly as for the single perceptron: $y^l=f(z^l)$. There is a bunch of activation function to choose from, and we consider it so important that we branched it into its own section, see section \ref{sec:activation}.
+
+The remaining part now is the weight updates, which are based on backward propagation. We then need to update the last set of weights first, and work back to the input,
+
+\begin{empheq}[box={\mybluebox[5pt]}]{align}
+\text{w}_{ij}^{(3)}&=\text{w}_{ij}^{(3)}-\eta\cdot\delta_{j}\cdot \text{z}_i^{(3)}\notag\\
+\notag\\
+\text{w}_{ij}^{(2)}&=\text{w}_{ij}^{(2)}-\eta\sum_{k=1}^{h_3}\delta_k\cdot \text{w}_{jk}^{(3)}f'(\text{z}_j^{(3)})\cdot \text{z}_i^{(2)}\notag\\
+\notag\\
+\text{w}_{ij}^{(1)}&=\text{w}_{ij}^{(1)}-\eta\sum_{k=1}^{h_3}\sum_{l=1}^{h_2}\delta_k\cdot \text{w}_{lk}^{(3)}f'(\text{z}_l^{(3)})\cdot \text{w}_{jl}^{(2)}f'(\text{z}_j^{(2)})\cdot \text{z}_i^{(1)}\notag
+\end{empheq}
+where we have used the short hand 
+\begin{equation*}
+\delta_j=(t_j-\text{z}_j^{(3)})\cdot f'(\text{z}_j^{(3)})
+\end{equation*}
+and the $\text{z}_i^{(1)}$ are just the input nodes. If we take a close look at the weight updating equations, we observe that there is a pattern. By defining a unique function $\delta_{ij}^{(l)}=\text{w}_{ij}^{(l)}f'(\text{z}_i^{(l)})$ for each layer, we can generalize the equations above, and find an expression for an arbitrary number of layers. It might be easier to vectorize first. 
+
+
+\subsection{Convolutional Neural Networks (CNN)}
+Convolutional neural networks are known to be good at image classification, but how can we use it on sound classification? The idea is to turn the samples into images, and for that one can for example use a mel spectrogram, as described in the theory section. 
+
+CNNs are based on FNNs, but the image is initially feed through a few layers that extract the most important information. 
+
+\subsubsection*{Convolutional layer}
+Initially, the image is sent into a convolutional layer, which is meant to reveal structures and shapes in the image. The way we do it, is to introduce a filter that we slide over the entire image and multiply with all pixels (with overlap). Every time the filter is multiplied with a set of pixels, we sum all the multiplications and add the value to an activation map. The activation map is completed after we have multiplied the filter with the entire image. A typical filter has dimensions 16x16, but depends on the image shape. It is important to choose a filter that is big enough to cover structures. 
+
+\subsubsection*{Pooling layer}
+It is common to insert a pooling layer in-between convolutional layers, but why do we do that? A pooling layer is just a way to reduce the dimensionality of the representation such that we do not need to optimize that many parameters, but also helps to control overfitting. It works the way that we divide the representation (usually an activation map) into regions of equal size and represent each region with one single number. Max pooling is apparently the most popular technique, which just represents each region with the largest number in that region, but it is also possible to use average pooling, min pooling etc.. \cite{pooling}
+
+As an example, we can divide the image into 2x2 regions, which will reduce the size of the representation with 75\%. 
+
+\subsubsection*{Dropout}
+Dropout is widely used in neural network layers, and is another method to prevent overfitting. The way it works is just to drop out units in the current layer.
+
+To understand the idea, we need to take a close look at why overfitting occurs. Overfitting occurs when neighbor nodes collaborate, and become a powerful cluster which fits the model too specifically for the training set. To brake up those evil clusters, we can simply set random nodes to zero. \cite{Dropout}
+
+\subsubsection*{Fully connected layer}
+The last part of a convolutional network is often refereed to as a fully connected layer, which is just a FNN. The output from the other layers needs to be flatten out before it is sent into the FNN.
+
+\subsection{Recurrent Neural Networks (RNN)}
+Last, but not least, we will examine recurrent neural networks. In the time domain, the sound at one time is dependent on sounds at other times, but the methods above are not able to utilize that because they lack memory. 
+
+In RNNs, information is shared between the different nodes, in that sense they have a short memory. This make the RNNs applicable when dealing with sequential data, such as handwriting recognition, speech recognition and other data sets where the input location matters. 
+
+In its simplest form, a so-called vanilla recurrent neural network, values on hidden nodes are fed back to the same nodes at the next time step, which creates a short-term memory. This is known to give better results on sequential data than ordinary FNNs, but it also has some cons that makes it useless in our case, especially the vanishing gradient problem. Instead, we will turn to more advanced methods which have a long-term memory as well, namely long short-term memory and gated recurrent units.
+
+\subsubsection*{Long Short-Term Memory (LSTM)}
+Long short-term memory is an extension of the vanilla network, and is able to remember multiple previous time steps at the same time. It is therefore suited to extract important features which repeat occasionally. The way it works, is that it has three gates: an input gate, forget gate and output gate. Based on the targets, the network decides whether the input is important (pass to output gate) or noise (send to forget gate). Because of the forget gate, the gradients will remain steep and the vanishing gradient problem will not occur. Even though an input is sent to the forgot gate, the information will still be stored in the long time memory. \cite{lstm}
+
+\subsubsection*{Gated Recurrent Unit (GRU)}
+Gated recurrent unit is a relatively fresh method, which has shown similar performances as the more traditional LSTM. GRUs come with an input gate, update gate and a reset gate, which work in a similar way as the LSTM gates. The update gate determines how much of the past information is relevant for the future and the reset gate decides how much of the past information to forget. \cite{gru}

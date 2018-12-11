@@ -1,0 +1,31 @@
+\title{\mtitle}
+\author{\mauthor}
+\date\today
+
+\maketitle
+
+\begin{itemize}
+\item Github repository containing programs and results:
+\end{itemize}
+\begingroup
+\begin{center}
+	\url{https://github.com/evenmn/FYS-STK4155}
+\end{center}
+\endgroup
+\vspace{1.5cm}
+
+\begin{abstract}
+The aim of this project is to divide various sounds into ten categories, inspired by the \href{https://datahack.analyticsvidhya.com/contest/practice-problem-urban-sound-classification/}{Urban Sound Challenge}. For that we have investigated the performance of logistic regression and various neural networks, like Feed-forward Neural Networks (FNNs), Convolutional Neural Networks (CNNs) and Recurrent Neural Networks (RNNs). 
+
+When it comes to error estimation, accuracy score is a natural choice. Various activation functions were investigated, and regularization was added for the logistic case. Since we mostly used ADAM as optimization tool...
+	
+To extract features from our dataset (dimensionality reduction), we used a spectrogram in the CNN case, and Mel Frequency Ceptral Coefficients (MFCCs) for FNN and RNN. We also tried two RNN networks, mainly the Long Short-Term Memory (LSTM) network and the Gated Recurrent Unit (GRU) network. 
+
+All the neural networks were more or less able to recognize the training set, but it was a significantly difference in validation accuracy. FNN provided the highest validation accuracy of 94\%, followed by LSTM (88\%), GRU (86\%) and CNN (82\%). Our linear model, logistic regression, was only able to classify 60\% of the test set correctly. 
+\end{abstract}
+
+\newpage
+\tableofcontents
+
+%\newpage
+
