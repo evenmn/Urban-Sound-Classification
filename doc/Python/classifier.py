@@ -1,7 +1,6 @@
 # Import packages
 import numpy as np
 import pandas as pd
-#import tensorflow as tf
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn import metrics 
@@ -78,14 +77,6 @@ def Logistic():
     model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
     model.fit(X_train, t_train, batch_size=32, epochs=50, validation_data=(X_val, t_val))
     
-    # Examine test dataset
-    #X_val = np.loadtxt('../data/X_test_40.txt')
-    #y = model.predict(X_val)
-    
-    #categories = lb.inverse_transform(np.argmax(y, axis=1))
-    #for cat in categories:
-    #    print(cat)
-    
 
 def FNN(N=1):
     X_train, t_train, X_val, t_val = load_mfcc()
@@ -108,15 +99,6 @@ def FNN(N=1):
 
     model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
     model.fit(X_train, t_train, batch_size=32, epochs=10000, validation_data=(X_val, t_val))
-    
-    # Examine test dataset
-    #X_val = np.loadtxt('../data/X_test_40.txt')
-    #y = model.predict(X_val)
-    
-    #categories = lb.inverse_transform(np.argmax(y, axis=1))
-    #for cat in categories:
-    #    print(cat)
-    
 
 
 def Convolutional():

@@ -1,4 +1,10 @@
 \section{Conclusion} \label{sec:conclusion}
-Even though we did not perform any CPU time analysis, the CNN method is by far the most time consuming, which should be taken into account when deciding which method we prefer. The reason for the difference is that the input into CNN is much larger than the input into the other methods (173 times larger). 
+Before we started with the contest, we were aware that the USC is an ambitious project. Firstly, we had not analyzed a time-dependent data set using neural networks before. Secondly, the data set itself is not very user-friendly - the samplings have various lengths and some files are even damaged. However, we were able to bypass the problems using feature extraction and some manual fixing. 
 
-A lot of options, and we have just looked at a fraction of them, so our conclusion is not necessarily correct (?).
+The project turned out to be successful, even though we were not able to recognize all the samplings. The obtained accuracy is higher than what we expected, and we are pretty happy with that. 
+
+When it comes to the conclusion of which method is the best, we will stress that it is based on our experiences and might not be valid for other approaches and parameter values. In the networks the number of options are more or less unlimited, so we have not been able to try everything. Probably we have missed the optimal combination of parameters, methods and functions, but it is really hard to find. 
+
+The FNN gave the highest accuracy both for the training set and the test set, and in that sense we can conclude that it is the best method. It is also among the fastest methods, which is important when doing classification in practice. The RNN methods were also pretty good when it came to accuracy and CPU time.
+
+As discussed in section \ref{sec:discussion}, the RNNs did might not reach their fully potential since we sent in reprocessed data, which is not necessarily sequential. For further work, it would be worth to feed the raw data into the RNNs, and use zero padding to avoid the various length problem.

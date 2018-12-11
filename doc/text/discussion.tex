@@ -1,5 +1,5 @@
 \section{Discussion} \label{sec:discussion}
-We found the logistic regression to give relatively low accuracy score, which is because there is no linear dependency between the classes. The score converges in a few steps because the number of weights to optimize was small. 
+We found the logistic regression to give relatively low accuracy score, which is because there is no linear dependency between the classes. The score converges in a few steps because the number of weights to optimize was small. When extracting features, we always used 40 frames. This number could be increased hoping to keep more information, but with 60, 80 and 100 frames the results did not change. 
 
 From table \eqref{tab:fnn}, we can see that the more hidden nodes the slower does the accuracy converge. This makes perfectly sense, because we then have a larger number of weights to vary. The accuracy for the training set is apparently converging against the same value no matter how many hidden nodes we have, but the validation accuracy is getting higher as the number of hidden nodes increases. This happens because the network gets more flexible when layers are added. 
 

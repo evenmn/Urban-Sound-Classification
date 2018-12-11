@@ -27,4 +27,6 @@ temp*
 *.bcf
 *.xml
 *.gz
+*.bbl
+*blx.bib
 
