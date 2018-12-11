@@ -8,6 +8,7 @@
 \usepackage{booktabs}	% Wonderful tables
 \usepackage{float}		% Stick images to prefered spot
 \usepackage{color}		% For different colors
+\usepackage{fancybox}	% Oval equation box
 \usepackage{listings}	% Inserting code
 \usepackage{hyperref}	% URLs
 \usepackage{amsmath}	% Math symbols
@@ -33,7 +34,7 @@ sorting=ynt
 \addbibresource{refs.bib}
 
 %listings
-\definecolor{myblue}{rgb}{0.8, 0.8, 1}
+\definecolor{myblue}{rgb}{.8, .8, 1}
 \lstset{language=python}
 \lstset{basicstyle=\small}
 \lstset{backgroundcolor=\color{myblue}}
@@ -49,15 +50,15 @@ sorting=ynt
 
 %tikz
 \setcounter{secnumdepth}{4}
-\usetikzlibrary{through, shapes, calc, shapes, arrows, positioning, er, arrows.meta, shadows}
-\tikzstyle{neuron}=[draw,circle,minimum size=20pt,inner sep=0pt, fill=white]
+\usetikzlibrary{through, shapes, calc, arrows, positioning, arrows.meta, shadows}
+\tikzstyle{neuron}=[draw,circle,minimum size=20pt,inner sep=0pt, fill=myblue]
 \tikzstyle{stateTransition}=[thick]
 \tikzstyle{learned}=[text=red]
 
-\tikzset{basic/.style={draw,fill=myblue!20,text width=1em,text badly centered}}
-\tikzset{input/.style={basic,circle}}
+\tikzset{basic/.style={draw,fill=myblue,text width=1em,text badly centered}}
+\tikzset{input/.style={basic,circle},fill=blue}
 \tikzset{weights/.style={basic,rectangle}}
-\tikzset{functions/.style={basic,circle,fill=myblue!10}}
+\tikzset{functions/.style={basic,circle,fill=myblue}}
 
 %empheq blue box
 \newlength\mytemplen

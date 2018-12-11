@@ -34,7 +34,7 @@ Logistic regression is a linear model, which means that each input node is multi
 	\node[below of=n,font=\scriptsize] {weights};
 	\node[right of=right] {$y$};
 	\end{tikzpicture}
-	\caption{Logistic regression model with $n$ inputs.}
+	\caption{Logistic regression model with $n$ inputs. Figure is created using tikz. \cite{tikz}}
 	\label{fig:single_perceptron}
 \end{figure}
 
@@ -136,7 +136,7 @@ Feed-forward neural networks work mostly in the same way as the single layer per
 	\node[below=5em of h3,font=\scriptsize] {hidden};
 	\node[below=5.8em of center,font=\scriptsize] {output};
 	\end{tikzpicture}
-	\caption{Neural network with 3 input nodes, 5 hidden nodes and 2 output nodes, in addition to the bias nodes.}
+	\caption{Neural network with 3 input nodes, 5 hidden nodes and 2 output nodes, in addition to the bias nodes. Figure is created using tikz. \cite{tikz}}
 	\label{fig:neural_network}
 \end{figure}
 
@@ -184,7 +184,7 @@ Dropout is widely used in neural network layers, and is another method to preven
 To understand the idea, we need to take a close look at why overfitting occurs. Overfitting occurs when neighbor nodes collaborate, and become a powerful cluster which fits the model too specifically for the training set. To brake up those evil clusters, we can simply set random nodes to zero. \cite{Dropout}
 
 \subsubsection*{Fully connected layer}
-The last part of a convolutional network is often refereed to as a fully connected layer, which is just a FNN. The output from the other layers needs to be flatten out before it is sent into the FNN.
+The last part of a convolutional network is often refereed to as a fully connected layer, which is just a FNN. The output from the other layers need to be flatten out before it is sent into the FNN.
 
 \subsection{Recurrent Neural Networks (RNN)}
 Last, but not least, we will examine recurrent neural networks. In the time domain, the sound at one time is dependent on sounds at other times, but the methods above are not able to utilize that because they lack memory. 

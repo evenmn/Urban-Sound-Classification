@@ -161,6 +161,41 @@
     \field{year}{2013}
   \endentry
 
+  \entry{tikz}{inproceedings}{}
+    \name{author}{1}{}{%
+      {{hash=TT}{%
+         family={Tantau},
+         familyi={T\bibinitperiod},
+         given={T.},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Springer-Verlag}%
+    }
+    \strng{namehash}{TT1}
+    \strng{fullhash}{TT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Tan13}
+    \field{sortinit}{2}
+    \field{sortinithash}{2}
+    \field{booktitle}{Proceedings of the 20th International Conference on Graph
+  Drawing}
+    \verb{doi}
+    \verb 10.1007/978-3-642-36763-2_46
+    \endverb
+    \field{isbn}{978-3-642-36762-5}
+    \field{pages}{517\bibrangedash 528}
+    \field{series}{GD'12}
+    \field{title}{Graph Drawing in {TikZ}}
+    \list{location}{1}{%
+      {Redmond, WA}%
+    }
+    \field{year}{2013}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
   \entry{gru}{article}{}
     \name{author}{6}{}{%
       {{hash=CK}{%
