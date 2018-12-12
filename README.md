@@ -15,3 +15,5 @@ For detailed about what we have done any why we do so, please read [report.pdf](
 
 ## Contest results
 You should note carefully that the training set and validation set described in the report have known targets. In addition, Vidhya Analytics have provided us with a test set without known targets as described above. The real challenge is to classify this data set, which we did in the appendix in [report.pdf](report.pdf). 
+
+> Using 4 hidden layers of 1024 nodes each, ADAM optimizer with a batch size of 32 and 1000 epochs, ReLU activation function on hidden layers and softmax on the output, a dropout of 50\% in all layers and the MFCCs as inputs with 40 frames, we obtain a training accuracy of \textbf{98\%}. According to Vidhya Analytics, the test accuracy is just \textbf{60\%}, which is poor compared to the validation accuracy. Even though the test data set is way larger than the validation set (5434 against 1746), there is no reason why the accuracy should be lower if the average prediction difficulties are the same, which they should be. Maybe TensorFlow calculates the validation accuracy in another way than Vidhya Analytics?

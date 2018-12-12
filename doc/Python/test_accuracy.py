@@ -1,6 +1,6 @@
 # Import packages
 import numpy as np
-import pandas as pd
+import csv
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn import metrics 
@@ -22,11 +22,11 @@ def load_mfcc():
     lb = LabelEncoder()
     t = np_utils.to_categorical(lb.fit_transform(t))
 
-    return X, t
+    return X, t, lb
     
 
 def FNN(N=1):
-    X, t = load_mfcc()
+    X, t, lb = load_mfcc()
 
     num_labels = t.shape[1]
 
@@ -45,15 +45,42 @@ def FNN(N=1):
     model.add(Activation('softmax'))
 
     model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
-    model.fit(X, t, batch_size=32, epochs=500)
+    model.fit(X, t, batch_size=32, epochs=1000)
     
     # Examine test dataset
     X_test = np.loadtxt('../data/mfcc_test_40.txt')
     y = model.predict(X_test)
     
+    # One hot decoder
     categories = lb.inverse_transform(np.argmax(y, axis=1))
-    for cat in categories:
-        print(cat)
+    for i in range(len(categories)):
+        categories[i] = categories[i].strip()       # Remove '\n'
+    
+    with open('../data/test.csv') as f:
+        reader = csv.reader(f, delimiter=',')
+        
+        IDs = []
+        
+        line = 0
+        for row in reader:
+            if line != 0:
+                IDs.append(int(row[0]))
+            line += 1
+        IDs = np.array(IDs)
+    f.close()
+
+    with open('../data/test.csv', mode='w') as f:
+        writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+        writer.writerow(['ID', 'Class'])
+        j = 0
+        for i in range(len(IDs)):
+            if IDs[i]!=1201 and IDs[i]!=2893 and IDs[i]!=4020 and IDs[i]!=5469 and IDs[i]!=5501 and IDs[i]!=5993 and IDs[i]!=5998:
+                writer.writerow([str(IDs[i]), categories[j]])
+                j += 1
+            else:
+                writer.writerow([str(IDs[i]), 'damaged'])
+    f.close()
         
         
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-\section{Sound Analysis}
+\section{Sound Analysis} \label{sec:theory}
 In sound analysis, one can either analyze the raw sound files directly or convert them to simpler files and hope we have not lost any essential features. A big advantage with the latter, is that the dimensionality and complexity of the data set is significantly reduced, but we will also loose some information. In this section we will first introduce the Urban Sound Challenge, and then look at the sounds from a time perspective, frequency perspective and see how to extract information. Finally, we take a look at some of the samplings and see if we can classify them with the naked eye.
 
 \subsection{The Urban Sound Challenge (USC)}
@@ -42,7 +42,7 @@ Sounds are longitudinal waves which actually are different pressures in the air.
 	\label{fig:sr}
 \end{figure} 
 
-How much information we loose depends on the sampling rate, which is the number of sampling points per second (see figure \eqref{fig:sr}). A rule of thumb is that one should have twice as high sampling rate as the highest sound frequency to keep the most important information. For instance, a human ear can perceive frequencies in the range 20-20000Hz, so around a sampling rate around 40kHz should be sufficient to keep all the information. Ordinary CD's use a sampling rate of 44.1kHz, but for speech recognition, 16kHz is enough to cover the frequency range of human speech. \cite{Medium}
+How much information we loose depends on the sampling rate, which is the number of sampling points per second (see figure \eqref{fig:sr}). A rule of thumb is that one should have twice as high sampling rate as the highest sound frequency to keep most of the information. For instance, a human ear can perceive frequencies in the range 20-20000Hz, so a sampling rate around 40kHz should be sufficient to keep all the information. Ordinary CD's use a sampling rate of 44.1kHz, but for speech recognition, 16kHz is enough to cover the frequency range of human speech. \cite{Medium}
 
 \subsection{Frequency domain}
 Sometimes, a frequency domain gives a better picture than the time domain. On one hand, one looses the time dependency, but on the other one gets information about which frequencies that are found in the wave. To go from the time domain to the frequency domain, one needs to use Fourier transformations, defined by 
@@ -73,7 +73,7 @@ MFCCs are features widely used in automatic speech and speaker recognition. \cit
 It actually takes advantage of the spectrogram, and use it to reveal the most dominant frequencies. Thereafter, we sum the energy in each frame and take the logarithm, which is the way an ear works. Those energies are then what we call the Mel Frequency Ceptral Coefficients. Unlike the spectrogram, we are now left with a single array of information from the spectrum. 
 
 \subsection{Examples from USC}
-We will end this section with a few examples of what a sound file may look like. In figure \eqref{fig:comparison}, we compare one of the dog bark sounds with one of the jackhammer sounds. On the top, we have the time domain, in the middle the spectrogram is presented and on the bottom we have plotted the MFCCs. As we can see, they are quite different, and distinguish between those two should not be too hard. The spectrograms also really makes sense, but it is hard for a human eye to extract information from the MFCCs. 
+We will end this section with a few examples of what a sound file may looks like. In figure \eqref{fig:comparison}, we compare one of the dog bark sounds with one of the jackhammer sounds. On the top, we have the time domain, in the middle the spectrogram is presented and on the bottom we have plotted the MFCCs. As we can see, they are quite different, and distinguish between those two should not be too hard. The spectrograms also really makes sense, but it is hard for a human eye to extract information from the MFCCs. 
 
 \begin{figure} [H]%
 	\centering
@@ -83,7 +83,7 @@ We will end this section with a few examples of what a sound file may look like.
 	\caption{Time domains (top), spectrograms (middle) and MFCCs (bottom) for two random sound files, more specifically dog bark on the left and jackhammer on the right.}%
 	\label{fig:comparison}
 \end{figure}
-However, sometimes two time domains in the same category look totally different, for example if one compares the jackhammer in \eqref{fig:comparison2} with the one in \eqref{fig:comparison}. Will it be possible for our program to understand that they are in the same category? Also sometimes two time domain from different categories look similar, as we can see in \eqref{fig:comparison2}. Can we really distinguish between them?
+However, sometimes two time domains in the same category look totally different, for example if one compares the jackhammer in figure \eqref{fig:comparison2} with the one in figure \eqref{fig:comparison}. Will it be possible for our program to understand that they are in the same category? Also sometimes two time domain from different categories look similar, as we can see in figure \eqref{fig:comparison2}. Can we really distinguish between them?
 
 \begin{figure} [H]%
 	\centering

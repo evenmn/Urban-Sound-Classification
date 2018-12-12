@@ -18,9 +18,8 @@ def parser(ID, n_mfcc, filename):
       
    except:
       print("Error encountered while parsing file: ", file_name)
+      print(ID)
       return None
- 
-   print(ID)
  
    return mfccs
 
@@ -49,6 +48,5 @@ for i in range(len(test)):
     feature = parser(test.ID[i], n_mfcc, '../data/Test/')
     X[i] = feature
 
-np.savetxt("../data/X_test_40.txt", X)
-#f.close()
+#np.savetxt("../data/X_test_40.txt", X)
 

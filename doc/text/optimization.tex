@@ -19,7 +19,7 @@ for iter in range(T):
 \end{lstlisting}
 
 \subsection{ADAM}
-ADAM is often the preferred optimization method in machine learning, due to its computational efficiency, little memory occupation and implementation ease. Since it was introduced in a paper by D. P. Kingma and J. Ba in 2015 \cite{adam}, the paper has collected more than 15000 citations! So what is so special about ADAM?
+ADAM is often the preferred optimization method in machine learning, due to its computational efficiency, little memory occupation and implementation ease. Since it was introduced in a paper by D. P. Kingma and J. Ba in 2015 \cite{adam}, the paper has collected more than 15000 citations! So what is unique about ADAM?
 
 ADAM is a momentum based method that only rely on the first derivative of the cost function. Required inputs are exponential decay rates $\beta_1$ and $\beta_2$, cost function $c(\bb{\theta})$ and initial weights $\bb{\theta}$, in addition to the learning rate $\eta$ and eventually a regularization $\lambda$. Interatively, we first calculate the gradient of the cost function, and use this to calculate the first and second moment estimates. Further, we bias-correct the moments before we use this to update the weights. An implementation may look like this
 \lstset{basicstyle=\scriptsize}

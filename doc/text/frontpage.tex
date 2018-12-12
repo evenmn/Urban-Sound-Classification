@@ -17,11 +17,11 @@
 \begin{abstract}
 The aim of this project is to divide various sounds into ten categories, inspired by the \href{https://datahack.analyticsvidhya.com/contest/practice-problem-urban-sound-classification/}{Urban Sound Challenge}. For that we have investigated the performance of logistic regression and various neural networks, like Feed-forward Neural Networks (FNNs), Convolutional Neural Networks (CNNs) and Recurrent Neural Networks (RNNs). 
 
-When it comes to error estimation, accuracy score is a natural choice. Various activation functions were investigated, and regularization was added for the logistic case. Since we mostly used ADAM as optimization tool...
+When it comes to error estimation, accuracy score is a natural choice. Various activation functions were examined, and regularization was added for the logistic case. As optimization tool ADAM was mainly used, with a various number of epochs and different batch sizes. 
 	
-To extract features from our dataset (dimensionality reduction), we used a spectrogram in the CNN case, and Mel Frequency Ceptral Coefficients (MFCCs) for FNN and RNN. We also tried two RNN networks, mainly the Long Short-Term Memory (LSTM) network and the Gated Recurrent Unit (GRU) network. 
+To extract features from our dataset (dimensionality reduction), we used a spectrogram in the CNN case, and Mel Frequency Ceptral Coefficients (MFCCs) for FNN and RNN. We also tried two different RNNs, namely the Long Short-Term Memory (LSTM) network and the Gated Recurrent Unit (GRU) network. 
 
-All the neural networks were more or less able to recognize the training set, but it was a significantly difference in validation accuracy. FNN provided the highest validation accuracy of 94\%, followed by LSTM (88\%), GRU (86\%) and CNN (82\%). Our linear model, logistic regression, was only able to classify 60\% of the test set correctly. 
+All the neural networks were more or less able to recognize the training set, but it was a significantly difference in validation accuracy. FNN provided the highest validation accuracy of 94\%, followed by LSTM (88\%), GRU (86\%) and CNN (82\%). Our linear model, logistic regression, was able to classify just 60\% of the validation set correctly. 
 \end{abstract}
 
 \newpage
